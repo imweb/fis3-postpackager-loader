@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
   "name": "fis3-packager-edu-loader",
   "version": "1.4.6",
+=======
+  "name": "fis3-postpackager-loader",
+  "version": "2.1.4",
+>>>>>>> remote/master
   "description": "resouce loader",
   "main": "index.js",
   "scripts": {
@@ -26,6 +31,10 @@
     "mocha": "^2.2.5"
   },
   "dependencies": {
+<<<<<<< HEAD
     "fis3-hook-commonjs": "^0.1.2"
+=======
+    "source-map": "^0.5.6"
+>>>>>>> remote/master
   }
 }

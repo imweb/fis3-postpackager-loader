@@ -133,9 +133,9 @@ fis.match('*.md', {
 1. 遍历所有的 html 文件，每个文件单独走以下流程。
 2. 分析 html 内容，插入注释块 `<!--SCRIPT_PLACEHOLDER-->` 到 `</body>` 前面，如果页面里面没有这个注释块的话。
 3. 分析 html 内容，插入注释块 `<!--STYLE_PLACEHOLDER-->` 到 `</head>` 前面，如果页面没有这个注释的话。
-4. 分析源码中 `<script>` 带有 data-loader 属性的或者资源名为[mod.js, require.js, require.js]的资源找出来，如果有的话。把找到的 js 加入队列，并且在该 `<script>` 后面加入 `<!--RESOURCEMAP_PLACEHOLDER-->` 注释块，如果页面里面没有这个注释的话。
+4. 分析源码中 `<script>` 带有 data-loader 属性的或者资源名为[mod.js, require.js, sea.js, system.js]的资源找出来，如果有的话。把找到的 js 加入队列，并且在该 `<script>` 后面加入 `<!--RESOURCEMAP_PLACEHOLDER-->` 注释块，如果页面里面没有这个注释的话。
 5. 分析源码中 `<script>` 带有 data-framework 属性的资源找出来。把找到的 js 加入队列。
-6. 分析此 html 文件的依赖，以及递归进去查找依赖中的依赖。把分析到的 js 加入到队列，css 加入到队列。
+6. 如果不存在`<!--DEPENDENCIES_INJECT_PLACEHOLDER-->` 注释，则开始分析此 html 文件的依赖，以及递归进去查找依赖中的依赖。把分析到的 js 加入到队列，css 加入到队列。如果存在，则在 7 步骤中处理，遇到注释开始加入依赖。
 7. 分析此 html 中 `<script>` 、 `<link>` 和 `<style>` 把搜集到的资源加入队列。
 8. 启用 allinone 打包，把队列中，挨一起的资源合并。如果是内联内容，直接合并即可，如果是外链文件，则合并文件内容，生成新内容。
 9. 把优化后的结果，即队列中资源，插入到 `<!--SCRIPT_PLACEHOLDER-->` 、 `<!--STYLE_PLACEHOLDER-->` 和 `<!--RESOURCEMAP_PLACEHOLDER-->` 注释块。
@@ -205,15 +205,31 @@ fis 中对依赖的js 加载，尤其是异步  js，需要一个 js loader。�
 * `scriptPlaceHolder` 默认 `<!--SCRIPT_PLACEHOLDER-->`
 * `stylePlaceHolder` 默认 `<!--STYLE_PLACEHOLDER-->`
 * `resourcePlaceHolder` 默认`<!--RESOURCEMAP_PLACEHOLDER-->`
-* `resourceType` 默认 'auto', 可选 `'mod'`、`'amd'`。
+* `dependenciesInjectPlaceHolder` 默认`<!--DEPENDENCIES_INJECT_PLACEHOLDER-->`
+* `resourceType` 默认 'auto', 可选 `'mod'`、`'amd'`、`'system'`、`'commonJs'`、`'cmd'(sea.js)`。
 * `allInOne` 默认 false, 配置是否合并零碎资源。
 
   allInOne 接收对象配置项。
 
+  - `css, js` 可接受函数, 回传file, 可定制化路径规则, 如:  
+  ```js
+    postpackager: fis.plugin('loader', {
+      allInOne: {
+        js: function (file) {
+          return "/static/js/" + file.filename + "_aio.js";
+        },
+        css: function (file) {
+          return "/static/css/" + file.filename + "_aio.css";
+        }
+      }      
+    })
+  ```
   - `css` all in one 打包后， css 文件的路径规则。默认为 `pkg/${filepath}_aio.css`
   - `js` all in one 打包后， js 文件的路径规则。默认为 `pkg/${filepath}_aio.js`
   - `includeAsyncs` 默认为 false。all in one 打包，是不包含异步依赖的，不过可以通过把此属性设置成 true，包含异步依赖。
   - `ignore` 默认为空。如果不希望部分文件被 all in one 打包，请设置 ignore 清单。
+  - `sourceMap` 默认为 `false`。是否生成 sourcemap.
+  - `useTrack`  默认为 `true`. 是否在打包文件中添加track信息
 
 * `processor` 默认为 `{'.html': 'html'}`, 即支持后缀是 .html 的文件，如果要支持其他后缀，请在此扩展。
 
@@ -233,6 +249,7 @@ fis 中对依赖的js 加载，尤其是异步  js，需要一个 js loader。�
 * `obtainStyle` 是否收集 `<style>` 和 `<link>` 内容。（非页面依赖部分）
 * `useInlineMap` 是否将 sourcemap 作为内嵌脚本输出。
 * `resoucemap` 默认为 `/pkg/${filepath}_map.js` 当 `useInLineMap` 为 `false` 的时候有效，用来控制 resourcemap 生成位置。
+* `resourcemapWhitespace` resourcemap缩进宽度, 默认为2.
 * `include` 默认生成的 sourcemap 只会包含异步依赖的 js, 如果想把一批模块化的 js 加入到 sourcemap 中，请参考一下配置：
 
   ```js

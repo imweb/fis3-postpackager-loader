@@ -1,19 +1,16 @@
-
-
-/*!db.js*/
-;define('db', function(require, exports, module) {
+/*!js/base/db.js*/
+;define('js/base/db', function(require, exports, module) {
 
   console.log('db');
 
 });
-
-/*!base.js*/
-;define('base', function(require, exports, module) {
+/*!js/base/base.js*/
+;define('js/base/base', function(require, exports, module) {
 
   // base.js 依赖jquery,badjs,db
-  require('jquery');
-  require('badjs');
-  require('db');
+  require('js/base/jquery');
+  require('js/base/badjs');
+  require('js/base/db');
   
   console.log('base');
   

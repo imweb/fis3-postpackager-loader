@@ -70,18 +70,18 @@ describe('fis3-postpackager-loader ', function () {
                 allInOne: {
                     ignore: '**/a.js',
                     // includeAsyncs: true,
-                    css: root + "xpy/static/pkg/a_aio.css",
+                    css: "/static/a_aio.css",
                     ignoreJsPacks:['base'],
                     ignore:'common.css'
                 },
                 jsPacks:[
                     {
                         match: /base\.js$/,
-                        ignores: ['jquery', 'badjs'],
+                        ignores: ['js/base/jquery', 'js/base/badjs'],
                         useMap: true
                     }, {
                         match: /^mod.main.*?\.js$/,
-                        ignores: ['base'],
+                        ignores: ['js/base/base'],
                         useMap: true
                     }
                 ],
@@ -151,6 +151,8 @@ describe('fis3-postpackager-loader ', function () {
             console.log('Done');
         });
 
+
+        // return
         var str = fis.util.read(path.join(root, 'xpy', 'static', 'pkg', 'index.html_aio.js'));
         expect(str.indexOf("db.main.js") > 0).to.be.true;
         expect(str.indexOf("modal.js") > 0).to.be.true;
@@ -160,13 +162,13 @@ describe('fis3-postpackager-loader ', function () {
         expect(str.indexOf("jquery.js") < 0).to.be.true;
 
 
-        str = fis.util.read(path.join(root,'xpy','static','base.js'));
+        str = fis.util.read(path.join(root,'xpy','static','js','base','base.js'));
 
         expect(str.indexOf("db.js") > 0).to.be.true;
         expect(str.indexOf("base.js") > 0).to.be.true;
         expect(str.indexOf("jquery.js") < 0).to.be.true;
 
-        str = fis.util.read(path.join(root, 'xpy', 'static', 'mod.main.js'));
+        str = fis.util.read(path.join(root, 'xpy', 'static','js','page', 'mod.main.js'));
         expect(str.indexOf("db.main.js") > 0).to.be.true;
         expect(str.indexOf("modal.js") > 0).to.be.true;
         expect(str.indexOf("jquery.upload.js") > 0).to.be.true;
@@ -175,7 +177,7 @@ describe('fis3-postpackager-loader ', function () {
         expect(str.indexOf("tvp.js") < 0).to.be.true;
 
 
-        str = fis.util.read(path.join(root, 'xpy', 'static', 'mod.main.info.js'));
+        str = fis.util.read(path.join(root, 'xpy', 'static','js','page1', 'mod.main.info.js'));
         expect(str.indexOf("db.info.js") > 0).to.be.true;
         expect(str.indexOf("modal.js") > 0).to.be.true;
         expect(str.indexOf("jquery.form.js") > 0).to.be.true;
@@ -184,11 +186,11 @@ describe('fis3-postpackager-loader ', function () {
         expect(str.indexOf("tvp.js") < 0).to.be.true;
 
 
-        str = fis.util.read(path.join(root, 'xpy', 'static', 'ckeditor.js'));
+        str = fis.util.read(path.join(root, 'xpy', 'static','js','page', 'ckeditor.js'));
         expect(str.indexOf("ckeditor.dep.js") > 0).to.be.true;
 
         str = fis.util.read(path.join(root, 'xpy', 'index.html'));
-        expect(str.indexOf("http://7.url.cn/edu/static/ckeditor.js") > 0).to.be.true;
+        expect(str.indexOf("http://7.url.cn/edu/static/js/page/ckeditor.js") > 0).to.be.true;
 
         //expect(file.getContent()).to.be.equal(fis.util.read(path.join(root, 'util','upload', 'maintar.css')));
 

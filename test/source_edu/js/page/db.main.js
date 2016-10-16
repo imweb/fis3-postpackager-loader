@@ -1,3 +1,3 @@
-require('./db');
+require('../base/db');
 
 console.log('db.main.js');

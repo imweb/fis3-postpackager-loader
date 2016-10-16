@@ -1,2 +1,2 @@
-require('./jquery');
+require('../base/jquery');
 console.log('jquery.upload');

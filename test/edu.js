@@ -70,7 +70,7 @@ describe('fis3-postpackager-loader ', function () {
                 allInOne: {
                     ignore: '**/a.js',
                     // includeAsyncs: true,
-                    css: "/static/a_aio.css",
+                    css: "/pkg/a_aio.css",
                     ignoreJsPacks:['base'],
                     ignore:'common.css'
                 },
@@ -86,7 +86,7 @@ describe('fis3-postpackager-loader ', function () {
                     }
                 ],
                 asyncPacks:true, // 是否异步打包
-                asyncPacksIgnore:['base'], // 异步打包忽略模块
+                asyncPacksIgnore:['js/base/base'], // 异步打包忽略模块
                 scriptPlaceHolder: "<!--SCRIPT_PLACEHOLDER-->",
                 stylePlaceHolder: '<!--STYLE_PLACEHOLDER-->',
                 resourcePlaceHolder: '<!--RESOURCEMAP_PLACEHOLDER-->',
@@ -162,6 +162,13 @@ describe('fis3-postpackager-loader ', function () {
         expect(str.indexOf("jquery.js") < 0).to.be.true;
 
 
+        str = fis.util.read(path.join(root, 'xpy', 'static', 'pkg', 'a_aio.css'));
+        expect(str.indexOf("common_a") > 0).to.be.true;
+        expect(str.indexOf("helper") > 0).to.be.true;
+        expect(str.indexOf("require_a") > 0).to.be.true;
+        expect(str.indexOf("require") > 0).to.be.true;
+
+
         str = fis.util.read(path.join(root,'xpy','static','js','base','base.js'));
 
         expect(str.indexOf("db.js") > 0).to.be.true;
@@ -191,6 +198,9 @@ describe('fis3-postpackager-loader ', function () {
 
         str = fis.util.read(path.join(root, 'xpy', 'index.html'));
         expect(str.indexOf("http://7.url.cn/edu/static/js/page/ckeditor.js") > 0).to.be.true;
+
+
+
 
         //expect(file.getContent()).to.be.equal(fis.util.read(path.join(root, 'util','upload', 'maintar.css')));
 

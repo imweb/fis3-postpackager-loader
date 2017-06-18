@@ -1,6 +1,6 @@
 {
   "name": "fis3-packager-edu-loader",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "resouce loader",
   "main": "index.js",
   "scripts": {
@@ -27,8 +27,6 @@
     "mocha": "^2.2.5"
   },
   "dependencies": {
-    "fis-parser-node-sass": "^1.0.0",
-    "fis-parser-node-sass-imweb": "^0.0.5",
     "source-map": "^0.5.6"
   }
 }

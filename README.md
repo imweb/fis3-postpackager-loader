@@ -48,6 +48,7 @@ fis.match('::package',{
           useMap: true
         }
       ],
+      uglify: true, // 是否开启压缩，默认为false
       asyncPacks:true, // 是否异步打包
       asyncPacksIgnore:['base'], // 异步打包忽略模块
       paths:{
